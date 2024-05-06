@@ -27,4 +27,4 @@ jobs:
         run: pkill -f "node node-api/server.js" || true
 
       - name: Start API
-        run: node node-api/server.js
+        run: node node-api/server.js &

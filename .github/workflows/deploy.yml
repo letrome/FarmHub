@@ -22,9 +22,11 @@ jobs:
       - name: Install Express.js
         run: npm install express
 
-      - name: Kill API
-        if: github.ref == 'refs/heads/main'
-        run: pkill -f "node species/server.js" || true
+      - name: Run Tests
+        run: species/integration-tests/run.sh
 
-      - name: Start API
-        run: RUNNER_TRACKING_ID="" && node species/server.js &
+      - name: Deploy Changes
+        if: success()
+        run: |
+          pkill -f "node species/server.js" || true
+          RUNNER_TRACKING_ID="" && node species/server.js &

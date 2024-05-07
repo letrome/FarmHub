@@ -24,7 +24,7 @@ jobs:
 
       - name: Kill API
         if: github.ref == 'refs/heads/main'
-        run: pkill -f "node node-api/server.js" || true
+        run: pkill -f "node species/server.js" || true
 
       - name: Start API
-        run: node node-api/server.js &
+        run: node species/server.js &

@@ -1,0 +1,1087 @@
+{
+	"info": {
+		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
+		"name": "Integration testing",
+		"description": "# ⛓️ Get started here\n\nPostman allows you to test your APIs using simple Javascript code. You can evaluate your response body, headers, cookies, and more using the [ChaiJS BDD](https://www.chaijs.com/api/bdd/) syntax.\n\nThis template guides you through the process of setting up an integration test to ensure that all individual components of an API function together seamlessly.\n\nThe API under test in this collection includes three endpoints for registering and receiving a token, accessing your unique generated name, and unregistering a token:\n\n- POST `/register`\n- POST `/unregister`\n- GET `/my-name`\n    \n\nBy setting up requests in the order of the operation, we can test the flow of data to and from the endpoints and ensure they work together as expected. We also verify that the data persists between requests on the back end.\n\n## 🔖 **How to use this template**\n\n**Step 1:** Check out the requests' documentation to learn more about -\n\n- what each request is meant to do.\n- the tests we've added against each one.\n    \n\n**Step 2:** Run this collection by clicking on \"Run\".\n\n<img src=\"https://content.pstmn.io/84019b0f-69c8-4c5f-98b9-2c90a6f9a0b1/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" alt=\"\" height=\"103\" width=\"266\">\n\n**Step 3:** To customize this template, replace the request URLs with your API endpoints and add or edit the tests if needed.\n\n## ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556688",
+		"_collection_link": "https://www.postman.com/letrome/workspace/farmville/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
+	},
+	"item": [
+		{
+			"name": "Species in node",
+			"item": [
+				{
+					"name": "List all",
+					"item": [
+						{
+							"name": "List all species",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 6\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(6);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"description\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"diet\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"naturalHabitat\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"conservationStatus\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								},
+								"description": "list all species in the database"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** list all species\n\n**Return** all species"
+				},
+				{
+					"name": "Get existing specie",
+					"item": [
+						{
+							"name": "Get a specie by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"specie1\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Cow\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The cow is a domesticated herbivorous mammal.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Grasslands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/specie1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"specie1"
+									]
+								},
+								"description": "Get a specie by id (example with the cow)"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get non-existing specie",
+					"item": [
+						{
+							"name": "Get a specie by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Specie not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/specie0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"specie0"
+									]
+								},
+								"description": "Get a specie by id (example with the cow)"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create and get a specie",
+					"item": [
+						{
+							"name": "Create a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"specie_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Goose\",\n\"description\": \"The goose is a waterfowl bird known for its honking sound.\",\n\"diet\": \"Herbivore\",\n\"naturalHabitat\": \"Wetlands\",\n\"conservationStatus\": \"Least Concern\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a specie by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"specie_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create and list all specie",
+					"item": [
+						{
+							"name": "Create a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"specie_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Goose\",\n\"description\": \"The goose is a waterfowl bird known for its honking sound.\",\n\"diet\": \"Herbivore\",\n\"naturalHabitat\": \"Wetlands\",\n\"conservationStatus\": \"Least Concern\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all species",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"const id = pm.collectionVariables.get(\"specie_id\");",
+											"const newSpecie = responseJson.find(specie => specie.id === id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 7\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(7);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"description\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"diet\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"naturalHabitat\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"conservationStatus\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});",
+											"",
+											"pm.test(\"Verify that the id of the new specie is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"specie_id\");",
+											"  pm.expect(newSpecie.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that the name of the new specie is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(newSpecie.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that the description of the new specie is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(newSpecie.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that the diet of the new specie is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(newSpecie.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that the naturalHabitat if the new specie is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(newSpecie.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that the conservationStatus of the new specie is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(newSpecie.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								},
+								"description": "list all species in the database"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create and delete a specie",
+					"item": [
+						{
+							"name": "Create a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"specie_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Goose\",\n\"description\": \"The goose is a waterfowl bird known for its honking sound.\",\n\"diet\": \"Herbivore\",\n\"naturalHabitat\": \"Wetlands\",\n\"conservationStatus\": \"Least Concern\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"specie_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								},
+								"description": "Delete a specie (delete horse data)"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a specie by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Specie not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Two consecutive delete",
+					"item": [
+						{
+							"name": "Create a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"specie_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Goose\",\n\"description\": \"The goose is a waterfowl bird known for its honking sound.\",\n\"diet\": \"Herbivore\",\n\"naturalHabitat\": \"Wetlands\",\n\"conservationStatus\": \"Least Concern\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/species",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"specie_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Goose\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that description is correct\", function () {",
+											"    const description = \"The goose is a waterfowl bird known for its honking sound.\";",
+											"    pm.expect(responseJson.description).to.eql(description);",
+											"});",
+											"",
+											"pm.test(\"Verify that diet is correct\", function () {",
+											"    const diet = \"Herbivore\";",
+											"    pm.expect(responseJson.diet).to.eql(diet);",
+											"});",
+											"",
+											"pm.test(\"Verify that naturalHabitat is correct\", function () {",
+											"    const naturalHabitat = \"Wetlands\";",
+											"    pm.expect(responseJson.naturalHabitat).to.eql(naturalHabitat);",
+											"});",
+											"",
+											"pm.test(\"Verify that conservationStatus is correct\", function () {",
+											"    const conservationStatus = \"Least Concern\";",
+											"    pm.expect(responseJson.conservationStatus).to.eql(conservationStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								},
+								"description": "Delete a specie (delete horse data)"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a specie",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Specie not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/species/{{specie_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"species",
+										"{{specie_id}}"
+									]
+								},
+								"description": "Delete a specie (delete horse data)"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

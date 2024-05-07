@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Install newman
+        run: npm install -g newman
+
       - name: Install Express.js
         run: npm install express
 

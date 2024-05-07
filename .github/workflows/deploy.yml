@@ -27,4 +27,4 @@ jobs:
         run: pkill -f "node species/server.js" || true
 
       - name: Start API
-        run: node species/server.js &
+        run: RUNNER_TRACKING_ID="" && node species/server.js &

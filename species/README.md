@@ -32,7 +32,7 @@ node species/server.js 1234
 Below, I describe how to interact with the endpoints of this service via a collection of curl.
 See [here](https://curl.se/) for more information about curl.
 
-Alternatingly, [here](https://www.postman.com/letrome/workspace/farmville/folder/7556688-79267a6c-d54d-419f-bac6-722d3e9e0764?action=share&source=copy-link&creator=7556688&ctx=documentation)
+Alternatively, [here](https://www.postman.com/letrome/workspace/farmhub/folder/7556688-79267a6c-d54d-419f-bac6-722d3e9e0764?action=share&source=copy-link&creator=7556688&ctx=documentation)
 is a postman collection with example of use of the api.
 
 ### List all species
@@ -85,11 +85,17 @@ curl -X PATCH -H "Content-Type: application/json" -d '{
 curl -X DELETE http://localhost:3000/species/specie4
 ```
 
+### Reset data to the default values
+
+```bash
+curl -X POST http://localhost:3000/reset
+```
+
 ## Integration tests
 
 Integration tests for this project are written in using postman (cf documentation). You can execute them directly from
 postman (in this case, they are accessible
-via [this link](https://www.postman.com/letrome/workspace/farmville/folder/7556688-a2b96fde-9c16-41cf-8976-4ce32c383e3f?action=share&source=copy-link&creator=7556688&ctx=documentation)),
+via [this link](https://www.postman.com/letrome/workspace/farmhub/folder/7556688-a2b96fde-9c16-41cf-8976-4ce32c383e3f?action=share&source=copy-link&creator=7556688&ctx=documentation)),
 or directly from this project.
 In this case, you need to have newman installed. You can install it via the following command (
 cf [documentation](https://learning.postman.com/docs/collections/using-newman-cli/installing-running-newman/)):

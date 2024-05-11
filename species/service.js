@@ -1,27 +1,31 @@
 const repository = require('./repository');
 
-function getAllSpecies() {
-  return repository.getAllSpecies();
+async function getAllSpecies() {
+  return await repository.getAllSpecies();
 }
 
-function getSpecieById(id) {
-  return repository.getSpecieById(id);
+async function getSpecieById(id) {
+  return await repository.getSpecieById(id);
 }
 
-function createSpecie(specie) {
-  return repository.createSpecie(specie);
+async function createSpecie(specie) {
+  return await repository.createSpecie(specie);
 }
 
-function updateSpecie(id, updatedSpecie) {
-  return repository.updateSpecie(id, updatedSpecie);
+async function updateSpecie(id, updatedSpecie) {
+  return await repository.updateSpecie(id, updatedSpecie);
 }
 
-function patchSpecie(id, updatedSpecie) {
-  return repository.patchSpecie(id, updatedSpecie);
+async function patchSpecie(id, updatedSpecie) {
+  return await repository.patchSpecie(id, updatedSpecie);
 }
 
-function deleteSpecie(id) {
-  return repository.deleteSpecie(id);
+async function deleteSpecie(id) {
+  return await repository.deleteSpecie(id);
+}
+
+async function reset() {
+  return await repository.reset();
 }
 
 module.exports = {
@@ -30,5 +34,6 @@ module.exports = {
   createSpecie,
   updateSpecie,
   patchSpecie,
-  deleteSpecie
+  deleteSpecie,
+  reset
 };

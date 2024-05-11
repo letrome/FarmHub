@@ -1,13 +1,13 @@
 const service = require('./service');
 
-function getAllSpecies(req, res) {
-  const species = service.getAllSpecies();
+async function getAllSpecies(req, res) {
+  const species = await service.getAllSpecies();
   res.json(species);
 }
 
-function getSpecieById(req, res) {
+async function getSpecieById(req, res) {
   const id = req.params.id;
-  const species = service.getSpecieById(id);
+  const species = await service.getSpecieById(id);
   if (species) {
     res.json(species);
   } else {
@@ -15,16 +15,16 @@ function getSpecieById(req, res) {
   }
 }
 
-function createSpecie(req, res) {
+async function createSpecie(req, res) {
   const specie = req.body;
-  const newSpecie = service.createSpecie(specie);
+  const newSpecie = await service.createSpecie(specie);
   res.status(201).json(newSpecie);
 }
 
-function updateSpecie(req, res) {
+async function updateSpecie(req, res) {
   const id = req.params.id;
   const updatedSpecie = req.body;
-  const specie = service.updateSpecie(id, updatedSpecie);
+  const specie = await service.updateSpecie(id, updatedSpecie);
   if (specie) {
     res.json(specie);
   } else {
@@ -32,10 +32,10 @@ function updateSpecie(req, res) {
   }
 }
 
-function patchSpecie(req, res) {
+async function patchSpecie(req, res) {
   const id = req.params.id;
   const updatedFields = req.body;
-  const specie = service.patchSpecie(id, updatedFields);
+  const specie = await service.patchSpecie(id, updatedFields);
   if (specie) {
     res.json(specie);
   } else {
@@ -43,14 +43,19 @@ function patchSpecie(req, res) {
   }
 }
 
-function deleteSpecie(req, res) {
+async function deleteSpecie(req, res) {
   const id = req.params.id;
-  const deletedSpecie = service.deleteSpecie(id);
+  const deletedSpecie = await service.deleteSpecie(id);
   if (deletedSpecie) {
     res.json(deletedSpecie);
   } else {
     res.status(404).json({ error: 'Specie not found' });
   }
+}
+
+async function reset(req, res) {
+  await service.reset();
+  res.json({applied: true});
 }
 
 function setupRoutes(app) {
@@ -60,6 +65,7 @@ function setupRoutes(app) {
   app.put('/species/:id', updateSpecie);
   app.patch('/species/:id', patchSpecie);
   app.delete('/species/:id', deleteSpecie);
+  app.post('/reset', reset);
 }
 
 module.exports = {

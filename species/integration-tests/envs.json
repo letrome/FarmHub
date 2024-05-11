@@ -3,13 +3,13 @@
 	"name": "Localhost",
 	"values": [
 		{
-			"key": "url",
+			"key": "species_url",
 			"value": "http://localhost:3300",
 			"type": "default",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-05-07T08:31:10.714Z",
-	"_postman_exported_using": "Postman/11.0.7"
+	"_postman_exported_at": "2024-05-11T21:35:50.204Z",
+	"_postman_exported_using": "Postman/11.0.11"
 }

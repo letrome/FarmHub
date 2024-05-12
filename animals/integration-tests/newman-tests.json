@@ -1,0 +1,1269 @@
+{
+	"info": {
+		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
+		"name": "Integration testing",
+		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatively, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556688",
+		"_collection_link": "https://www.postman.com/letrome/workspace/farmhub/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
+	},
+	"item": [
+		{
+			"name": "Animals",
+			"item": [
+				{
+					"name": "List all",
+					"item": [
+						{
+							"name": "List all animals",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 24\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(24);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"birthDate\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"specie\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"owner\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "List all animals"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** list all animals\n\n**Return** all animals"
+				},
+				{
+					"name": "Get existing animal",
+					"item": [
+						{
+							"name": "Get an animal by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"animal1\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Marguerite\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1959-12-16\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie1\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture1\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals/animal1",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"animal1"
+									]
+								},
+								"description": "Get an animal by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get an existing animal by its id\n\n**Return** the requested animal"
+				},
+				{
+					"name": "Get non-existing animal",
+					"item": [
+						{
+							"name": "Get an animal by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Animal not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals/animal0",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"animal0"
+									]
+								},
+								"description": "Get an animal by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get a non-existing animal by its id\n\n**Return** an error 404"
+				},
+				{
+					"name": "Create and get an animal",
+					"item": [
+						{
+							"name": "Create an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"animal_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "Create an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Get an animal by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"animal_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{animals_url}}/animals/{{animal_id}}",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"{{animal_id}}"
+									]
+								},
+								"description": "Get an animal by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/reset",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset animals to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create an animal\n\n**Then execute** Get this animal\n\n**Return** this animal"
+				},
+				{
+					"name": "Create and list all animals",
+					"item": [
+						{
+							"name": "Create an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"animal_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "Create an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "List all animals",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"const id = pm.collectionVariables.get(\"animal_id\");",
+											"const newAnimal = responseJson.find(animal => animal.id === id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 25\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(25);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"birthDate\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"specie\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"owner\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});",
+											"",
+											"pm.test(\"Verify that the id of the new anmal is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"animal_id\");",
+											"  pm.expect(newAnimal.id).to.eql(id);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that the name of the new anmal is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(newAnimal.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that the birthDate of the new anmal is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(newAnimal.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that the specie of the new anmal is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(newAnimal.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that theowner of the new anmal is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(newAnimal.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that the status of the new anmal is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(newAnimal.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that the picture of the new anmal is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(newAnimal.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "List all animals"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/reset",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset animals to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create an animal\n\n**Then execute** List all animals\n\n**Return** default animals plus this animal"
+				},
+				{
+					"name": "Create and delete an animal",
+					"item": [
+						{
+							"name": "Create an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"animal_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "Create an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"animal_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals/animal25",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"animal25"
+									]
+								},
+								"description": "Delete an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/reset",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset animals to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create an animal\n\n**Then execute** Delete this animal\n\n**Then execute** Get this animal\n\n**Return** an error 404"
+				},
+				{
+					"name": "Two consecutive deletes",
+					"item": [
+						{
+							"name": "Create an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"animal_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{animals_url}}/animals",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals"
+									]
+								},
+								"description": "Create an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"animal_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Poulain\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birthDate is correct\", function () {",
+											"    const birthDate = \"1848-02-01\";",
+											"    pm.expect(responseJson.birthDate).to.eql(birthDate);",
+											"});",
+											"",
+											"pm.test(\"Verify that specie is correct\", function () {",
+											"    const specie = \"specie4\";",
+											"    pm.expect(responseJson.specie).to.eql(specie);",
+											"});",
+											"",
+											"pm.test(\"Verify that owner is correct\", function () {",
+											"    const owner = \"owner1\";",
+											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals/animal25",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"animal25"
+									]
+								},
+								"description": "Delete an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Animal not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"animal_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/animals/animal25",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"animals",
+										"animal25"
+									]
+								},
+								"description": "Delete an animal"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{animals_url}}/reset",
+									"host": [
+										"{{animals_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset animals to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create an animal\n\n**Then execute** Delete this animal\n\n**Then execute** Delete this animal\n\n**Return** an error 404"
+				}
+			],
+			"description": "Integration tests of the service \"Animals\"."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

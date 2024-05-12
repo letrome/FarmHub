@@ -1,4 +1,4 @@
-name: CI
+name: Animals
 
 on:
   workflow_dispatch:

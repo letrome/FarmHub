@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
 		"name": "Integration testing",
-		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatingly, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
+		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatively, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7556688",
 		"_collection_link": "https://www.postman.com/letrome/workspace/farmhub/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
@@ -454,7 +454,7 @@
 					"description": "**Execute** Create a specie\n\n**Then execute** Get this specie\n\n**Return** this specie"
 				},
 				{
-					"name": "Create and list all specie",
+					"name": "Create and list all species",
 					"item": [
 						{
 							"name": "Create a specie",
@@ -922,6 +922,60 @@
 								"description": "Get a specie by id"
 							},
 							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{species_url}}/reset",
+									"host": [
+										"{{species_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset species to the default values"
+							},
+							"response": []
 						}
 					],
 					"description": "**Execute** Create a specie\n\n**Then execute** Delete this specie\n\n**Then execute** Get this specie\n\n**Return** an error 404"
@@ -1143,6 +1197,60 @@
 									]
 								},
 								"description": "Delete a specie"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"specie_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{species_url}}/reset",
+									"host": [
+										"{{species_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset species to the default values"
 							},
 							"response": []
 						}

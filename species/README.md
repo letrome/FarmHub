@@ -104,7 +104,7 @@ cf [documentation](https://learning.postman.com/docs/collections/using-newman-cl
 npm install -g newman
 ```
 
-Once installed, launch the tests via the script run.sh in species/integration-tests:
+Once installed, launch the tests via the script `run.sh` in `species/integration-tests`:
 
 ```bash
 species/integration-tests/run.sh

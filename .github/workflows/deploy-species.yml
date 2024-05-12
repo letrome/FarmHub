@@ -1,11 +1,12 @@
 name: CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      service:
+        description: 'Deploy service species'
+        required: true
+        default: 'species'
 
 jobs:
   build:
@@ -13,7 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -33,16 +34,3 @@ jobs:
         run: |
           pkill -f "node species/server.js" || true
           RUNNER_TRACKING_ID="" && node species/server.js &
-
-      - name: Install Slim
-        run: composer require slim/slim:^4.0 slim/psr7:^1.5 --working-dir animals
-
-      - name: Run Tests
-        run: animals/integration-tests/run.sh
-
-      - name: Deploy Changes
-        if: success()
-        run: |
-          pkill -f "php -S localhost:4000 -t animals/public" || true
-          RUNNER_TRACKING_ID="" && php -S localhost:4000 -t animals/public &
-        

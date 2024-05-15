@@ -15,28 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}
-
-      - name: Cache go modules
-        id: cache-go
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-go-modules
-        with:
-          path: ~/go
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -50,8 +28,6 @@ jobs:
         with:
           go-version: '>=1.17.0'
           check-latest: true
-          cache-dependency-path: |
-            pictures/go.sum
 
       - name: Install Go libraries
         run: cd pictures && go mod tidy

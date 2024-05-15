@@ -36,7 +36,7 @@ jobs:
         run: echo "::set-output name=ip_address::$(hostname -I | cut -d' ' -f1)"
 
       - name: Build
-        run: go build
+        run: cd pictures && go build
 
       - name: Run Tests
         run: pictures/integration-tests/run.sh

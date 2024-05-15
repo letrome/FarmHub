@@ -1,4 +1,4 @@
-name: Deploy Go Service
+name: Pictures
 
 on:
   workflow_dispatch:

@@ -34,7 +34,7 @@ jobs:
 
       - name: Get IP address
         id: get_ip
-        run: echo "::set-output name=ip_address::$(hostname -I | cut -d' ' -f1)"
+        run: echo "ip_address=$(hostname -I | cut -d' ' -f1)" >> $GITHUB_OUTPUT
 
       - name: Build
         run: |

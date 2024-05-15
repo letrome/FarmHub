@@ -41,7 +41,7 @@ jobs:
         if: success()
         run: |
           pkill -f "node species/server.js" || true
-          RUNNER_TRACKING_ID="" && node species/server.js &
+          RUNNER_TRACKING_ID="github_01" && node species/server.js &
 
       # Animals
       ## Dependencies specific to the service Animals
@@ -63,7 +63,7 @@ jobs:
         if: success()
         run: |
           pkill -f "php -S localhost:4000 -t animals/public" || true
-          RUNNER_TRACKING_ID="" && php -S localhost:4000 -t animals/public &
+          RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
 
       # Pictures
       ## Dependencies specific to the service Pictures
@@ -93,4 +93,4 @@ jobs:
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
           cd pictures
           pkill -f "go run . $IP_ADDRESS:5000" || true
-          RUNNER_TRACKING_ID="" && go run . $IP_ADDRESS:5000 &
+          RUNNER_TRACKING_ID="github_03" && go run . $IP_ADDRESS:5000 &

@@ -19,17 +19,30 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '21'
+        env:
+          CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('pictures/package-lock.json') }}
+          run: |
+            yarn install --frozen-lockfile
+            yarn cache save --key ${{ env.CACHE_KEY }}
 
       - name: Setup Go environment
         uses: actions/setup-go@v5.0.1
         with:
           go-version: '>=1.17.0'
+          check-latest: true
+          cache-dependency-path: |
+            pictures/go.sum
 
       - name: Install Go libraries
         run: cd pictures && go mod tidy
 
       - name: Install newman
         run: npm install -g newman
+        env:
+          CACHE_KEY: ${{ runner.os }}-newman-${{ hashFiles('pictures/package-lock.json') }}
+          run: |
+            npm install -g newman
+            npm cache save --key ${{ env.CACHE_KEY }}
 
       - name: Get IP address
         id: get_ip

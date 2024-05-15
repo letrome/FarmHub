@@ -1,0 +1,96 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Common dependencies
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21'
+
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Get IP address
+        id: get_ip
+        run: echo "ip_address=$(hostname -I | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      # Species
+      ## Dependencies specific to the service Species
+      - name: Install Express.js
+        run: npm install express
+
+      ## Run integration tests
+      - name: Run Tests for Species
+        run: species/integration-tests/run.sh
+
+      ## Deployment
+      - name: Deploy Changes
+        if: success()
+        run: |
+          pkill -f "node species/server.js" || true
+          RUNNER_TRACKING_ID="" && node species/server.js &
+
+      # Animals
+      ## Dependencies specific to the service Animals
+      - name: Install Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          php -r "unlink('composer-setup.php');"
+
+      - name: Install Slim
+        run: composer require slim/slim:^4.0 slim/psr7:^1.5 --working-dir animals
+
+      ## Integration tests
+      - name: Run Tests for Animals
+        run: animals/integration-tests/run.sh
+
+      ## Deployment
+      - name: Deploy Changes
+        if: success()
+        run: |
+          pkill -f "php -S localhost:4000 -t animals/public" || true
+          RUNNER_TRACKING_ID="" && php -S localhost:4000 -t animals/public &
+
+      # Pictures
+      ## Dependencies specific to the service Pictures
+      - name: Setup Go environment
+        uses: actions/setup-go@v5.0.1
+        with:
+          go-version: '>=1.17.0'
+          check-latest: true
+
+      - name: Install Go libraries
+        run: cd pictures && go mod tidy
+
+      - name: Build
+        run: |
+          cd pictures
+          go build .
+
+      ## Integration tests
+      - name: Run Tests for Pictures
+        run: pictures/integration-tests/run.sh
+
+      ## Deployment
+
+      - name: Deploy Changes
+        if: success()
+        run: |
+          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
+          cd pictures
+          pkill -f "go run . $IP_ADDRESS:5000" || true
+          RUNNER_TRACKING_ID="" && go run . $IP_ADDRESS:5000 &

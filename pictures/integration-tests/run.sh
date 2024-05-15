@@ -4,7 +4,7 @@ cd "$(dirname "$0")" || exit
 cd ..
 echo $PWD
 
-go run main.go localhost:5500&
+go run . localhost:5500&
 echo $?
 
 sleep 1

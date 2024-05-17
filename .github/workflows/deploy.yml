@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "deploy-scripts" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:

@@ -145,12 +145,10 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:5000/pictures/picture1",
-											"protocol": "http",
+											"raw": "{{pictures_url}}/pictures/picture1",
 											"host": [
-												"localhost"
+												"{{pictures_url}}"
 											],
-											"port": "5000",
 											"path": [
 												"pictures",
 												"picture1"

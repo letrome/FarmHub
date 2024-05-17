@@ -39,7 +39,7 @@
 											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"birthDate\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"specie\").and.to.be.a(\"string\").and.to.not.be.empty;",
-											"    pm.expect(entry).to.have.property(\"owner\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"farmer\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"  });",
@@ -117,9 +117,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -139,8 +139,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"exec": [],
-										"type": "text/javascript"
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -260,9 +263,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -295,7 +298,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -351,9 +354,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -505,9 +508,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -540,7 +543,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -587,7 +590,7 @@
 											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"birthDate\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"specie\").and.to.be.a(\"string\").and.to.not.be.empty;",
-											"    pm.expect(entry).to.have.property(\"owner\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"farmer\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
 											"  });",
@@ -604,7 +607,7 @@
 											"    pm.expect(newAnimal.name).to.eql(name);",
 											"});",
 											"",
-											"pm.test(\"Verify that the birthDate of the new animal is correct\", function () {",
+											"pm.test(\"Verify that the birthDate of the new anmal is correct\", function () {",
 											"    const birthDate = \"1848-02-01\";",
 											"    pm.expect(newAnimal.birthDate).to.eql(birthDate);",
 											"});",
@@ -614,9 +617,9 @@
 											"    pm.expect(newAnimal.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that theowner of the new animal is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(newAnimal.owner).to.eql(owner);",
+											"pm.test(\"Verify that thefarmer of the new animal is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(newAnimal.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that the status of the new animal is correct\", function () {",
@@ -732,7 +735,7 @@
 											"pm.collectionVariables.set(\"animal_id\", responseJson.id);",
 											"",
 											"// Tests",
-											" pm.test(\"Check that status code is 201\", function () {",
+											"pm.test(\"Check that status code is 201\", function () {",
 											"    pm.response.to.have.status(201);",
 											"});",
 											"",
@@ -755,9 +758,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -790,7 +793,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -846,9 +849,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -868,8 +871,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"exec": [],
-										"type": "text/javascript"
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -985,9 +991,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -1020,7 +1026,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"owner\": \"owner1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birthDate\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1076,9 +1082,9 @@
 											"    pm.expect(responseJson.specie).to.eql(specie);",
 											"});",
 											"",
-											"pm.test(\"Verify that owner is correct\", function () {",
-											"    const owner = \"owner1\";",
-											"    pm.expect(responseJson.owner).to.eql(owner);",
+											"pm.test(\"Verify that farmer is correct\", function () {",
+											"    const farmer = \"farmer1\";",
+											"    pm.expect(responseJson.farmer).to.eql(farmer);",
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
@@ -1098,8 +1104,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"exec": [],
-										"type": "text/javascript"
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],

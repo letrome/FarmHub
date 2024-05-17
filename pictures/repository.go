@@ -234,9 +234,9 @@ func (r *PictureRepository) getDefaultPictures() []Picture {
 		{ID: "picture22", Name: "picture of Saturnin", Type: "Animal", URL: "/pictures/animals/picture22.png"},
 		{ID: "picture23", Name: "picture of Donald", Type: "Animal", URL: "/pictures/animals/picture23.png"},
 		{ID: "picture24", Name: "picture of Howard", Type: "Animal", URL: "/pictures/animals/picture24.png"},
-		{ID: "picture25", Name: "picture of Alice", Type: "Farmer", URL: "/pictures/animals/picture25.png"},
-		{ID: "picture26", Name: "picture of Bob", Type: "Farmer", URL: "/pictures/animals/picture26.png"},
-		{ID: "picture27", Name: "picture of Eve", Type: "Farmer", URL: "/pictures/animals/picture27.png"},
-		{ID: "picture28", Name: "picture of Mallory", Type: "Farmer", URL: "/pictures/animals/picture28.png"},
+		{ID: "picture25", Name: "picture of Alice", Type: "Farmer", URL: "/pictures/farmers/picture25.png"},
+		{ID: "picture26", Name: "picture of Bob", Type: "Farmer", URL: "/pictures/farmers/picture26.png"},
+		{ID: "picture27", Name: "picture of Eve", Type: "Farmer", URL: "/pictures/farmers/picture27.png"},
+		{ID: "picture28", Name: "picture of Mallory", Type: "Farmer", URL: "/pictures/farmers/picture28.png"},
 	}
 }

@@ -17,6 +17,7 @@ func NewPictureController(service *PictureService) *PictureController {
 }
 
 func (c *PictureController) GetPictures(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	images, err := c.Service.GetAllPictures()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -31,6 +32,7 @@ func (c *PictureController) GetPictures(w http.ResponseWriter, _ *http.Request) 
 }
 
 func (c *PictureController) GetPicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	imageID := params["id"]
 
@@ -69,6 +71,7 @@ func (c *PictureController) GetPicture(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *PictureController) CreatePicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	var image Picture
 	err := json.NewDecoder(r.Body).Decode(&image)
 	if err != nil {
@@ -93,6 +96,7 @@ func (c *PictureController) CreatePicture(w http.ResponseWriter, r *http.Request
 }
 
 func (c *PictureController) UpdatePicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	imageID := params["id"]
 
@@ -143,6 +147,7 @@ func (c *PictureController) UpdatePicture(w http.ResponseWriter, r *http.Request
 }
 
 func (c *PictureController) PatchPicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	imageID := params["id"]
 
@@ -193,6 +198,7 @@ func (c *PictureController) PatchPicture(w http.ResponseWriter, r *http.Request)
 }
 
 func (c *PictureController) DeletePicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	imageID := params["id"]
 
@@ -236,7 +242,7 @@ func (c *PictureController) DeletePicture(w http.ResponseWriter, r *http.Request
 }
 
 func (c *PictureController) Reset(w http.ResponseWriter, _ *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
 	err := c.Service.Reset()
 
 	if err != nil {

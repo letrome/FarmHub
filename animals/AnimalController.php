@@ -41,7 +41,7 @@ $app->post('/animals', function (Request $request, Response $response, $args) us
         name: $body['name'],
         birthDate: $body['birthDate'],
         specie: $body['specie'],
-        owner: $body['owner'],
+        farmer: $body['farmer'],
         status: $body['status'],
         picture: $body['picture']
     );
@@ -59,7 +59,7 @@ $app->put('/animals/{id}', function (Request $request, Response $response, $args
         name: $body['name'],
         birthDate: $body['birthDate'],
         specie: $body['specie'],
-        owner: $body['owner'],
+        farmer: $body['farmer'],
         status: $body['status'],
         picture: $body['picture']
     );

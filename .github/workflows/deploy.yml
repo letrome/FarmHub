@@ -39,7 +39,19 @@ jobs:
       ## Deployment
       - name: Deploy Changes
         if: success()
-        run: RUNNER_TRACKING_ID="github_01" && species/deploy.sh
+        run: |
+          pid=$(sudo lsof -t -i:3000)
+          if [ $? -eq 0 ]; then
+            sudo kill $pid
+            if [ $? -eq 0 ]; then
+              echo "Previous instance killed"
+            else
+              echo "Error when trying to kill the instance"
+            fi
+          else
+            echo "No running instance to kill"
+          fi
+          RUNNER_TRACKING_ID="github_01" &&node species/server.js &
 
       # Animals
       ## Dependencies specific to the service Animals
@@ -59,7 +71,19 @@ jobs:
       ## Deployment
       - name: Deploy Changes
         if: success()
-        run: RUNNER_TRACKING_ID="github_02" && species/deploy.sh
+        run: |
+          pid=$(sudo lsof -t -i:4000)
+          if [ $? -eq 0 ]; then
+            sudo kill $pid
+            if [ $? -eq 0 ]; then
+              echo "Previous instance killed"
+            else
+              echo "Error when trying to kill the instance"
+            fi
+          else
+            echo "No running instance to kill"
+          fi
+          RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
 
       # Pictures
       ## Dependencies specific to the service Pictures
@@ -84,7 +108,18 @@ jobs:
       ## Deployment
       - name: Deploy Changes
         if: success()
-        run: RUNNER_TRACKING_ID="github_03" && pictures/deploy.sh
-          
-          sudo kill $(sudo lsof -t -i:5000)
+        run: |
+          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
+          pid=$(sudo lsof -t -i:5000)
+          if [ $? -eq 0 ]; then
+            sudo kill $pid
+            if [ $? -eq 0 ]; then
+              echo "Previous instance killed"
+            else
+              echo "Error when trying to kill the instance"
+            fi
+          else
+            echo "No running instance to kill"
+          fi
+          cd pictures || exit
           RUNNER_TRACKING_ID="github_03" && go run . $IP_ADDRESS:5000 &

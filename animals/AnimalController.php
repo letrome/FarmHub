@@ -39,7 +39,7 @@ $app->post('/animals', function (Request $request, Response $response, $args) us
     $body = json_decode($request->getBody(), true);
     $animal = new AnimalModel(
         name: $body['name'],
-        birthDate: $body['birthDate'],
+        birth_date: $body['birth_date'],
         specie: $body['specie'],
         farmer: $body['farmer'],
         status: $body['status'],
@@ -57,7 +57,7 @@ $app->put('/animals/{id}', function (Request $request, Response $response, $args
     $id = $args['id'];
     $animal = new AnimalModel(
         name: $body['name'],
-        birthDate: $body['birthDate'],
+        birth_date: $body['birth_date'],
         specie: $body['specie'],
         farmer: $body['farmer'],
         status: $body['status'],

@@ -40,7 +40,7 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          pkill -f "node species/server.js" || true
+          sudo kill $(sudo lsof -t -i:3000)
           RUNNER_TRACKING_ID="github_01" && node species/server.js &
 
       # Animals
@@ -62,7 +62,7 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          pkill -f "php -S localhost:4000 -t animals/public" || true
+          sudo kill $(sudo lsof -t -i:4000)
           RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
 
       # Pictures
@@ -92,5 +92,5 @@ jobs:
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
           cd pictures
-          pkill -f "go run . $IP_ADDRESS:5000" || true
+          sudo kill $(sudo lsof -t -i:5000)
           RUNNER_TRACKING_ID="github_03" && go run . $IP_ADDRESS:5000 &

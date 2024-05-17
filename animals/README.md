@@ -64,9 +64,9 @@ curl -X GET http://localhost:4000/animals/animal1
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
     "name": "Poulain",
-    "birthDate": "1848-02-01",
+    "birth_date": "1848-02-01",
     "specie": "specie4",
-    "owner": "owner1",
+    "farmer": "farmer1",
     "status": "gone",
     "picture": "picture25"
 }' http://localhost:4000/animals
@@ -77,9 +77,9 @@ curl -X POST -H "Content-Type: application/json" -d '{
 ```bash
 curl -X PUT -H "Content-Type: application/json" -d '{
     "name": "Pulain",
-    "birthDate": "1848-02-01",
+    "birth_date": "1848-02-01",
     "specie": "specie4",
-    "owner": "owner1",
+    "farmer": "farmer1",
     "status": "gone",
     "picture": "picture25"
 }' http://localhost:4000/animals/animal25

@@ -76,7 +76,7 @@ async function createSpecie(species) {
   await initData();
 
   const newId = "specie" + (lastAssignedId + 1).toString();
-  const newSpecie = new Species(newId, species.name, species.description, species.diet, species.naturalHabitat, species.conservationStatus);
+  const newSpecie = new Species(newId, species.name, species.description, species.diet, species.natural_habitat, species.conservation_status);
   speciesData.push(newSpecie);
   lastAssignedId++;
 
@@ -109,16 +109,16 @@ async function patchSpecie(id, updatedFields) {
       name: updatedFields.name || originalSpecies.name,
       description: updatedFields.description || originalSpecies.description,
       diet: updatedFields.diet || originalSpecies.diet,
-      naturalHabitat: updatedFields.naturalHabitat || originalSpecies.naturalHabitat,
-      conservationStatus: updatedFields.conservationStatus || originalSpecies.conservationStatus
+      natural_habitat: updatedFields.natural_habitat || originalSpecies.natural_habitat,
+      conservation_status: updatedFields.conservation_status || originalSpecies.conservation_status
     };
     speciesData[index] = new Species(
       updatedSpecies.id,
       updatedSpecies.name,
       updatedSpecies.description,
       updatedSpecies.diet,
-      updatedSpecies.naturalHabitat,
-      updatedSpecies.conservationStatus
+      updatedSpecies.natural_habitat,
+      updatedSpecies.conservation_status
     );
 
     await saveData();

@@ -269,7 +269,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -298,7 +298,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"Gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -360,7 +360,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -514,7 +514,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -543,7 +543,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"Gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -623,7 +623,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that the status of the new animal is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(newAnimal.status).to.eql(status);",
 											"});",
 											"",
@@ -764,7 +764,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -793,7 +793,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"Gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -855,7 +855,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -997,7 +997,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",
@@ -1026,7 +1026,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"gone\",\n    \"picture\": \"picture25\"\n}",
+									"raw": "{\n    \"name\": \"Poulain\",\n    \"birth_date\": \"1848-02-01\",\n    \"specie\": \"specie4\",\n    \"farmer\": \"farmer1\",\n    \"status\": \"Gone\",\n    \"picture\": \"picture25\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1088,7 +1088,7 @@
 											"});",
 											"",
 											"pm.test(\"Verify that status is correct\", function () {",
-											"    const status = \"gone\";",
+											"    const status = \"Gone\";",
 											"    pm.expect(responseJson.status).to.eql(status);",
 											"});",
 											"",

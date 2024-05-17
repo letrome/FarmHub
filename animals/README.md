@@ -67,7 +67,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "birth_date": "1848-02-01",
     "specie": "specie4",
     "farmer": "farmer1",
-    "status": "gone",
+    "status": "Gone",
     "picture": "picture25"
 }' http://localhost:4000/animals
 ```
@@ -80,7 +80,7 @@ curl -X PUT -H "Content-Type: application/json" -d '{
     "birth_date": "1848-02-01",
     "specie": "specie4",
     "farmer": "farmer1",
-    "status": "gone",
+    "status": "Gone",
     "picture": "picture25"
 }' http://localhost:4000/animals/animal25
 ```

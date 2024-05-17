@@ -117,17 +117,17 @@ class AnimalRepository
         return [
             new AnimalModel(name: 'Marguerite', birth_date: '1959-12-16', specie: 'specie1', farmer: 'farmer1', status: 'present', picture: 'picture1', id: 'animal1'),
             new AnimalModel(name: 'Clarabelle', birth_date: '1930-04-11', specie: 'specie1', farmer: 'farmer1', status: 'present', picture: 'picture2', id: 'animal2'),
-            new AnimalModel(name: 'Bessie', birth_date: '1975-08-01', specie: 'specie1', farmer: 'farmer2', status: 'gone', picture: 'picture3', id: 'animal3'),
+            new AnimalModel(name: 'Bessie', birth_date: '1975-08-01', specie: 'specie1', farmer: 'farmer2', status: 'Gone', picture: 'picture3', id: 'animal3'),
             new AnimalModel(name: 'La vache qui rit', birth_date: '1921-04-16', specie: 'specie1', farmer: 'farmer2', status: 'present', picture: 'picture4', id: 'animal4'),
 
             new AnimalModel(name: 'Chicken Run', birth_date: '2000-06-23', specie: 'specie2', farmer: 'farmer3', status: 'present', picture: 'picture5', id: 'animal5'),
             new AnimalModel(name: 'Chicken Little', birth_date: '2005-10-30', specie: 'specie2', farmer: 'farmer3', status: 'present', picture: 'picture6', id: 'animal6'),
             new AnimalModel(name: 'Footix', birth_date: '1996-11-27', specie: 'specie2', farmer: 'farmer4', status: 'present', picture: 'picture7', id: 'animal7'),
-            new AnimalModel(name: 'Monique', birth_date: '2014-03-01', specie: 'specie2', farmer: 'farmer4', status: 'gone', picture: 'picture8', id: 'animal8'),
+            new AnimalModel(name: 'Monique', birth_date: '2014-03-01', specie: 'specie2', farmer: 'farmer4', status: 'Gone', picture: 'picture8', id: 'animal8'),
 
-            new AnimalModel(name: 'Dolly', birth_date: '1996-07-05', specie: 'specie3', farmer: 'farmer1', status: 'gone', picture: 'picture9', id: 'animal9'),
+            new AnimalModel(name: 'Dolly', birth_date: '1996-07-05', specie: 'specie3', farmer: 'farmer1', status: 'Gone', picture: 'picture9', id: 'animal9'),
             new AnimalModel(name: 'Shaun', birth_date: '2007-03-05', specie: 'specie3', farmer: 'farmer1', status: 'present', picture: 'picture10', id: 'animal10'),
-            new AnimalModel(name: 'Shrek', birth_date: '1996-11-27', specie: 'specie3', farmer: 'farmer2', status: 'gone', picture: 'picture11', id: 'animal11'),
+            new AnimalModel(name: 'Shrek', birth_date: '1996-11-27', specie: 'specie3', farmer: 'farmer2', status: 'Gone', picture: 'picture11', id: 'animal11'),
             new AnimalModel(name: 'Wooloo', birth_date: '2019-11-15', specie: 'specie3', farmer: 'farmer2', status: 'present', picture: 'picture12', id: 'animal12'),
 
             new AnimalModel(name: 'Tornado', birth_date: '1957-10-10', specie: 'specie4', farmer: 'farmer3', status: 'present', picture: 'picture13', id: 'animal13'),

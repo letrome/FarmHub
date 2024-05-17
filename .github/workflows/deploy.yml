@@ -40,19 +40,14 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          sudo netstat -tlnp | grep ':3000' | wc -l
-          if [ $? -eq 0 ]; then
+          has_process=$(sudo netstat -tlnp | grep ':3000' | wc -l)
+          if [ $has_process -ne 0 ]; then
             pid=$(sudo lsof -t -i:3000)
             sudo kill $pid
-            if [ $? -eq 0 ]; then
-              echo "Previous instance killed"
-            else
-              echo "Error when trying to kill the instance"
-            fi
           else
             echo "No running instance to kill"
           fi
-          RUNNER_TRACKING_ID="github_01" &&node species/server.js &
+          RUNNER_TRACKING_ID="github_01" && node species/server.js &
 
       # Animals
       ## Dependencies specific to the service Animals
@@ -73,8 +68,8 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          sudo netstat -tlnp | grep ':4000' | wc -l
-          if [ $? -eq 0 ]; then
+          has_process=$(sudo netstat -tlnp | grep ':4000' | wc -l)
+          if [ $has_process -ne 0 ]; then
             pid=$(sudo lsof -t -i:4000)
             sudo kill $pid
             if [ $? -eq 0 ]; then
@@ -112,8 +107,8 @@ jobs:
         if: success()
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          sudo netstat -tlnp | grep ':5000' | wc -l
-          if [ $? -eq 0 ]; then
+          has_process=$(sudo netstat -tlnp | grep ':5000' | wc -l)
+          if [ $has_process -ne 0 ]; then
             pid=$(sudo lsof -t -i:5000)
             sudo kill $pid
             if [ $? -eq 0 ]; then

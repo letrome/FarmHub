@@ -39,9 +39,7 @@ jobs:
       ## Deployment
       - name: Deploy Changes
         if: success()
-        run: |
-          sudo kill $(sudo lsof -t -i:3000)
-          RUNNER_TRACKING_ID="github_01" && node species/server.js &
+        run: RUNNER_TRACKING_ID="github_01" && species/deploy.sh
 
       # Animals
       ## Dependencies specific to the service Animals
@@ -61,9 +59,7 @@ jobs:
       ## Deployment
       - name: Deploy Changes
         if: success()
-        run: |
-          sudo kill $(sudo lsof -t -i:4000)
-          RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
+        run: RUNNER_TRACKING_ID="github_02" && species/deploy.sh
 
       # Pictures
       ## Dependencies specific to the service Pictures
@@ -86,11 +82,9 @@ jobs:
         run: pictures/integration-tests/run.sh
 
       ## Deployment
-
       - name: Deploy Changes
         if: success()
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          cd pictures
+        run: RUNNER_TRACKING_ID="github_03" && pictures/deploy.sh
+          
           sudo kill $(sudo lsof -t -i:5000)
           RUNNER_TRACKING_ID="github_03" && go run . $IP_ADDRESS:5000 &

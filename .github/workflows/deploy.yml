@@ -40,8 +40,9 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          pid=$(sudo lsof -t -i:3000)
+          sudo netstat -tlnp | grep ':3000' | wc -l
           if [ $? -eq 0 ]; then
+            pid=$(sudo lsof -t -i:3000)
             sudo kill $pid
             if [ $? -eq 0 ]; then
               echo "Previous instance killed"
@@ -72,8 +73,9 @@ jobs:
       - name: Deploy Changes
         if: success()
         run: |
-          pid=$(sudo lsof -t -i:4000)
+          sudo netstat -tlnp | grep ':4000' | wc -l
           if [ $? -eq 0 ]; then
+            pid=$(sudo lsof -t -i:4000)
             sudo kill $pid
             if [ $? -eq 0 ]; then
               echo "Previous instance killed"
@@ -110,8 +112,9 @@ jobs:
         if: success()
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          pid=$(sudo lsof -t -i:5000)
+          sudo netstat -tlnp | grep ':5000' | wc -l
           if [ $? -eq 0 ]; then
+            pid=$(sudo lsof -t -i:5000)
             sudo kill $pid
             if [ $? -eq 0 ]; then
               echo "Previous instance killed"

@@ -28,23 +28,30 @@ jobs:
         run: echo "ip_address=$(hostname -I | cut -d' ' -f1)" >> $GITHUB_OUTPUT
 
       # Species
-      ## Dependencies specific to the service Species
+      ## Begin dependencies part
       - name: Install Express.js
         run: npm install express
+      ## End dependencies part
 
-      ## Run integration tests
-      - name: Run Tests for Species
+      - name: Run integration tests for service species
         run: species/integration-tests/run.sh
 
-      ## Deployment
-      - name: Deploy Changes
+      - name: Stop previous service species
         if: success()
         run: |
-          sudo kill $(sudo lsof -t -i:3000)
-          RUNNER_TRACKING_ID="github_01" && node species/server.js &
+          has_process=$(sudo netstat -tlnp | grep ':3000' | wc -l)
+          if [ $has_process -ne 0 ]; then
+            pid=$(sudo lsof -t -i:3000)
+            sudo kill $pid
+          else
+            echo "No running instance to kill"
+          fi
+
+      - name: Start new service species
+        run: RUNNER_TRACKING_ID="github_01" && node species/server.js &
 
       # Animals
-      ## Dependencies specific to the service Animals
+      ## Begin dependencies part
       - name: Install Composer
         run: |
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -53,20 +60,27 @@ jobs:
 
       - name: Install Slim
         run: composer require slim/slim:^4.0 slim/psr7:^1.5 --working-dir animals
+      ## End dependencies part
 
-      ## Integration tests
-      - name: Run Tests for Animals
+      - name: Run integration tests for service animals
         run: animals/integration-tests/run.sh
 
-      ## Deployment
-      - name: Deploy Changes
+      - name: Stop previous service animals
         if: success()
         run: |
-          sudo kill $(sudo lsof -t -i:4000)
-          RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
+          has_process=$(sudo netstat -tlnp | grep ':4000' | wc -l)
+          if [ $has_process -ne 0 ]; then
+            pid=$(sudo lsof -t -i:4000)
+            sudo kill $pid
+          else
+            echo "No running instance to kill"
+          fi
+
+      - name: Start new service animals
+        run: RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
 
       # Pictures
-      ## Dependencies specific to the service Pictures
+      ## Begin dependencies part
       - name: Setup Go environment
         uses: actions/setup-go@v5.0.1
         with:
@@ -75,22 +89,33 @@ jobs:
 
       - name: Install Go libraries
         run: cd pictures && go mod tidy
+      ## End dependencies part
 
       - name: Build
         run: |
           cd pictures
           go build .
 
-      ## Integration tests
-      - name: Run Tests for Pictures
+
+      - name: Run integration tests for service pictures
         run: pictures/integration-tests/run.sh
 
-      ## Deployment
-
-      - name: Deploy Changes
+      - name: Stop previous service pictures
         if: success()
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          cd pictures
-          sudo kill $(sudo lsof -t -i:5000)
-          RUNNER_TRACKING_ID="github_03" && go run . $IP_ADDRESS:5000 &
+          has_process=$(sudo netstat -tlnp | grep ':5000' | wc -l)
+          if [ $has_process -ne 0 ]; then
+            pid=$(sudo lsof -t -i:5000)
+            sudo kill $pid
+            if [ $? -eq 0 ]; then
+              echo "Previous instance killed"
+            else
+              echo "Error when trying to kill the instance"
+            fi
+          else
+            echo "No running instance to kill"
+          fi
+
+      - name: Start new service pictures
+        run: RUNNER_TRACKING_ID="github_03" && cd pictures || exit && go run . $IP_ADDRESS:5000 &

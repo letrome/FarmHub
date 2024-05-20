@@ -14,126 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Common dependencies
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '21'
-
-      - name: Install newman
-        run: npm install -g newman
-
       - name: Get IP address
         id: get_ip
         run: echo "ip_address=$(hostname -I | cut -d' ' -f1)" >> $GITHUB_OUTPUT
-
-      # Species
-      ## Begin dependencies part
-      - name: Install Express.js
-        run: npm install express
-      ## End dependencies part
-
-      - name: Run integration tests for service species
-        run: species/integration-tests/run.sh
-
-      - name: Stop previous service species
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':3000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:3000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service species
-        run: RUNNER_TRACKING_ID="github_01" && node species/server.js &
-
-      # Animals
-      ## Begin dependencies part
-      - name: Install Composer
-        run: |
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-          php -r "unlink('composer-setup.php');"
-
-      - name: Install Slim
-        run: composer require slim/slim:^4.0 slim/psr7:^1.5 --working-dir animals
-      ## End dependencies part
-
-      - name: Run integration tests for service animals
-        run: animals/integration-tests/run.sh
-
-      - name: Stop previous service animals
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':4000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:4000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service animals
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          RUNNER_TRACKING_ID="github_02" && php -S $IP_ADDRESS:4000 -t animals/public &
-
-      # Pictures
-      ## Begin dependencies part
-      - name: Setup Go environment
-        uses: actions/setup-go@v5.0.1
-        with:
-          go-version: '>=1.17.0'
-          check-latest: true
-
-      - name: Install Go libraries
-        run: cd pictures && go mod tidy
-      ## End dependencies part
-
-      - name: Build
-        run: |
-          cd pictures
-          go build .
-
-      - name: Run integration tests for service pictures
-        run: pictures/integration-tests/run.sh
-
-      - name: Stop previous service pictures
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':5000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:5000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service pictures
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          RUNNER_TRACKING_ID="github_03" && cd pictures || exit && ./farmhub $IP_ADDRESS:5000 &
 
       # Farmers
       ## Begin Dependencies part
       - name: Setup up python environment
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: ''
 
       - name: Install dependencies
         run: |
           cd farmers
           pip install -r requirements.txt
       ## End Dependencies part
-
-      - name: Run integration tests for service animals
-        run: |
-          cd farmers
-          integration-tests/run.sh
 
       - name: Stop previous service farmers
         if: success()

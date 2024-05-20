@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "farmers" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:

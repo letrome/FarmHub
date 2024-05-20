@@ -79,3 +79,22 @@ curl -XDELETE localhost:6000/farmers/farmer5
 ```bash
 curl -XPOST localhost:6000/reset
 ```
+
+## Integration tests
+
+Integration tests for this project are written in using postman (cf documentation). You can execute them directly from
+postman (in this case, they are accessible
+via [this link](https://www.postman.com/letrome/workspace/farmhub/folder/7556688-215eb1e6-1f04-4973-9fae-b13c466805af?action=share&source=copy-link&creator=7556688&ctx=documentation)),
+or directly from this project.
+In this case, you need to have newman installed. You can install it via the following command (
+cf [documentation](https://learning.postman.com/docs/collections/using-newman-cli/installing-running-newman/)):
+
+```bash
+npm install -g newman
+```
+
+Once installed, from the `farmers` folder, launch the tests via the script `run.sh` in `integration-tests`:
+
+```bash
+integration-tests/run.sh
+```

@@ -119,10 +119,10 @@ jobs:
 
       # Farmers
       ## Begin Dependencies part
-      - name: Set up Python environment
-        uses: actions/setup-python@v2
+      - name: Setup up python environment
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12.3'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |

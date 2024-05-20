@@ -77,7 +77,9 @@ jobs:
           fi
 
       - name: Start new service animals
-        run: RUNNER_TRACKING_ID="github_02" && php -S localhost:4000 -t animals/public &
+        run: |
+          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
+          RUNNER_TRACKING_ID="github_02" && php -S $IP_ADDRESS:4000 -t animals/public &
 
       # Pictures
       ## Begin dependencies part
@@ -96,26 +98,55 @@ jobs:
           cd pictures
           go build .
 
-
       - name: Run integration tests for service pictures
         run: pictures/integration-tests/run.sh
 
       - name: Stop previous service pictures
         if: success()
         run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
           has_process=$(sudo netstat -tlnp | grep ':5000' | wc -l)
           if [ $has_process -ne 0 ]; then
             pid=$(sudo lsof -t -i:5000)
             sudo kill $pid
-            if [ $? -eq 0 ]; then
-              echo "Previous instance killed"
-            else
-              echo "Error when trying to kill the instance"
-            fi
           else
             echo "No running instance to kill"
           fi
 
       - name: Start new service pictures
-        run: RUNNER_TRACKING_ID="github_03" && cd pictures || exit && go run . $IP_ADDRESS:5000 &
+        run: |
+          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
+          RUNNER_TRACKING_ID="github_03" && cd pictures || exit && ./farmhub $IP_ADDRESS:5000 &
+
+      # Farmers
+      ## Begin Dependencies part
+      - name: Setup up python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: ''
+
+      - name: Install dependencies
+        run: |
+          cd farmers
+          pip install -r requirements.txt
+      ## End Dependencies part
+
+      - name: Run integration tests for service farmers
+        run: |
+          cd farmers
+          integration-tests/run.sh
+
+      - name: Stop previous service farmers
+        if: success()
+        run: |
+          has_process=$(sudo netstat -tlnp | grep ':6000' | wc -l)
+          if [ $has_process -ne 0 ]; then
+            pid=$(sudo lsof -t -i:6000)
+            sudo kill $pid
+          else
+            echo "No running instance to kill"
+          fi
+
+      - name: Start new service farmers
+        run: |
+          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
+          RUNNER_TRACKING_ID="github_04" && cd farmers || exit && python main.py --host=$IP_ADDRESS --port=6000 &

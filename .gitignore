@@ -4,3 +4,5 @@
 **/vendor
 **/package-lock.json
 **/composer
+farmers/.venv
+farmers/__pycache__

@@ -107,4 +107,4 @@ jobs:
           done
 
       - name: Perform post-deployment action
-        run: nohup ./launch_stack.sh
+        run: RUNNER_TRACKING_ID="" ./launch_stack.sh

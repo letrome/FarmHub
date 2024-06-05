@@ -2,6 +2,8 @@
 
 cd "$(dirname "$0")" || exit
 
+IP_ADDRESS=$(hostname -I | cut -d ' ' -f1)
+
 # Launch the stack
 ## Launch species
 cd species || exit
@@ -18,9 +20,9 @@ cd .. || exit
 
 ## Launch animals
 cd animals || exit
-php -S 127.0.0.1:4000 -t public > ../nohup.out 2> ../nohup.err < /dev/null &
+php -S ${IP_ADDRESS}:4000 -t public > ../nohup.out 2> ../nohup.err < /dev/null &
 echo "waiting for animals service being launched ..."
-while ! nc -z 127.0.0.1 4000; do
+while ! nc -z ${IP_ADDRESS} 4000; do
   sleep 1
 done
 
@@ -30,10 +32,10 @@ cd .. || exit
 
 ## Launch pictures
 cd pictures || exit
-go run . 127.0.0.1:5000 > ../nohup.out 2> ../nohup.err < /dev/null &
+./farmhub ${IP_ADDRESS}:5000 > ../nohup.out 2> ../nohup.err < /dev/null &
 
 echo "waiting for pictures service being launched ..."
-while ! nc -z localhost 5000; do
+while ! nc -z ${IP_ADDRESS} 5000; do
   sleep 1
 done
 

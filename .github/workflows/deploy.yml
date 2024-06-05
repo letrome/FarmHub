@@ -92,87 +92,20 @@ jobs:
       ###################################################
 
       # Stop & start stack
-      ## Species
-      - name: Stop previous service species
+      - name: Stop previous services
         if: success()
         run: |
-          has_process=$(sudo netstat -tlnp | grep ':3000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:3000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
+          for ((i=3; i<=7; i++)); do
+            has_process=$(sudo netstat -tlnp | grep ':${i}000' | wc -l)
+            if [ $has_process -ne 0 ]; then
+              pid=$(sudo lsof -t -i:3000)
+              sudo kill $pid
+              echo "Instance running on port ${i}000 has been killed"
+            else
+              echo "No instance running on port ${i}000 to kill"
+            fi
+          done
 
-      - name: Start new service species
-        run: nohup node species/server.js > ../nohup.out 2> ../nohup.err < /dev/null &
-
-      ## Animals
-      - name: Stop previous service animals
-        if: success()
+      - name: Perform post-deployment action
         run: |
-          has_process=$(sudo netstat -tlnp | grep ':4000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:4000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service animals
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          nohup php -S $IP_ADDRESS:4000 -t animals/public > ../nohup.out 2> ../nohup.err < /dev/null &
-
-      ## Pictures
-      - name: Stop previous service pictures
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':5000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:5000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service pictures
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          cd pictures || exit
-          nohup ./farmhub $IP_ADDRESS:5000 > ../nohup.out 2> ../nohup.err < /dev/null &
-
-      ## Farmers
-      - name: Stop previous service farmers
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':6000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:6000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service farmers
-        run: |
-          IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          cd farmers || exit
-          nohup python main.py --host=$IP_ADDRESS --port=6000 > ../nohup.out 2> ../nohup.err < /dev/null &
-
-      ## Farm
-      - name: Stop previous service farm
-        if: success()
-        run: |
-          has_process=$(sudo netstat -tlnp | grep ':7000' | wc -l)
-          if [ $has_process -ne 0 ]; then
-            pid=$(sudo lsof -t -i:7000)
-            sudo kill $pid
-          else
-            echo "No running instance to kill"
-          fi
-
-      - name: Start new service farm
-        run: |
-          cd farm || exit
-          nohup mvn spring-boot:run > ../nohup.out 2> ../nohup.err < /dev/null &
+          ./launch_stack.sh

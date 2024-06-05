@@ -14,4 +14,4 @@ if __name__ == "__main__":
     parser.add_argument("--port", dest="port", default=6000, help="Port number")
     args = parser.parse_args()
 
-    uvicorn.run(app, host=args.host, port=args.port)
+    uvicorn.run(app, host=args.host, port=int(args.port))

@@ -38,57 +38,62 @@ is a postman collection with example of use of the api.
 ### List all species
 
 ```bash
-curl -X GET http://localhost:3000/species
+curl -XGET http://localhost:3000/species
 ```
 
 ### Get a specie by id (example with the cow)
 
 ```bash
-curl -X GET http://localhost:3000/species/specie1
+curl -XGET http://localhost:3000/species/specie1
 ```
 
 ### Create a new specie (example with the goose)
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-"name": "Goose",
-"description": "The goose is a waterfowl bird known for its honking sound.",
-"diet": "Herbivore",
-"naturalHabitat": "Wetlands",
-"conservationStatus": "Least Concern"
-}' http://localhost:3000/species
+curl -XPOST http://localhost:3000/species -d '{
+        "name": "Goose",
+        "description": "The goose is a waterfowl bird known for its honking sound.",
+        "diet": "Herbivore",
+        "naturalHabitat": "Wetlands",
+        "conservationStatus": "Least Concern"
+    }'
+    -H "Content-Type: application/json"
 ```
 
-### Update a specie (replace pig data with goat data)
+*suppose that we get the id 'specie7' in answer of the specie creation.*
+
+### Update a specie (replace goose data with goat data)
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{
-"name": "Goat",
-"description": "The goat is a domesticated herbivorous mammal.",
-"diet": "Herbivore",
-"naturalHabitat": "Grasslands",
-"conservationStatus": "Least Concern"
-}' http://localhost:3000/species/specie5
+curl -XPUT localhost:3000/species/specie7 -d '{
+        "name": "Goat",
+        "description": "The goat is a domesticated herbivorous mammal.",
+        "diet": "Herbivore",
+        "naturalHabitat": "Grasslands",
+        "conservationStatus": "Least Concern"
+    }'
+    -H 'Content-type: application/json'
 ```
 
 ### Update specific fields of a specie (update description for goat)
 
 ```bash
-curl -X PATCH -H "Content-Type: application/json" -d '{
-"description": "The goat is a domesticated herbivorous mammal with horns."
-}' http://localhost:3000/species/specie5
+curl -XPATCH localhost:3000/species/specie7 -d'{
+        "description": "The goat is a domesticated herbivorous mammal with horns."
+    }'
+    -H 'Content-type: application/json'
 ```
 
 ### Delete a specie (delete horse data)
 
 ```bash
-curl -X DELETE http://localhost:3000/species/specie4
+curl -XDELETE http://localhost:3000/species/specie7
 ```
 
 ### Reset data to the default values
 
 ```bash
-curl -X POST http://localhost:3000/reset
+curl -XPOST http://localhost:3000/reset
 ```
 
 ## Integration tests

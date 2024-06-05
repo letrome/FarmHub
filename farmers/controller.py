@@ -19,6 +19,7 @@ def get_farmer_by_id(farmer_id: str, response: Response):
 
     if farmer is None:
         response.status_code = 404
+        response.headers["content-type"] = "application/json"
         response.body = json.dumps({"error": "Farmer not found"}).encode("utf-8")
         return response
 
@@ -26,15 +27,10 @@ def get_farmer_by_id(farmer_id: str, response: Response):
 
 
 @router.post("/farmers")
-async def create_farmer(request: Request, response: Response):
+async def create_farmer(request: Request):
     body = await request.json()
 
     farmer = service.create_farmer(body)
-
-    if farmer is None:
-        response.status_code = 404
-        response.body = json.dumps({"error": "Farmer not found"}).encode("utf-8")
-        return response
 
     return farmer.model_dump()
 
@@ -46,6 +42,7 @@ async def update_farmer(farmer_id: str, request: Request, response: Response):
 
     if farmer is None:
         response.status_code = 404
+        response.headers["content-type"] = "application/json"
         response.body = json.dumps({"error": "Farmer not found"}).encode("utf-8")
         return response
 
@@ -60,6 +57,7 @@ async def patch_farmer(farmer_id: str, request: Request, response: Response):
 
     if farmer is None:
         response.status_code = 404
+        response.headers["content-type"] = "application/json"
         response.body = json.dumps({"error": "Farmer not found"}).encode("utf-8")
         return response
 
@@ -67,11 +65,12 @@ async def patch_farmer(farmer_id: str, request: Request, response: Response):
 
 
 @router.delete("/farmers/{farmer_id}")
-def delete_farmer(farmer_id: str, response: Response):
+async def delete_farmer(farmer_id: str, response: Response):
     farmer = service.delete_farmer(farmer_id)
 
     if farmer is None:
         response.status_code = 404
+        response.headers["content-type"] = "application/json"
         response.body = json.dumps({"error": "Farmer not found"}).encode("utf-8")
         return response
 

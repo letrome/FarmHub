@@ -40,32 +40,48 @@ curl -XGET localhost:6000/farmers/farmer1
 ### Create a farmer (example with José)
 
 ```bash
-curl -XPOST localhost:6000/farmers -d'{"first_name":"José","last_name":"Bové","birth_date":"1953-06-11","specialties":["Cow","Sheep","Pig"],"picture":"picture29.png","status":"Active"}'
+curl -XPOST localhost:6000/farmers -d'{
+        "first_name":"José",
+        "last_name":"Bové",
+        "birth_date":"1953-06-11",
+        "specialties":[
+            "Cow",
+            "Sheep",
+            "Pig"
+        ],
+        "picture":"picture30",
+        "status":"present"
+    }'
+    -H "Content-Type: application/json"
 ```
+
+*suppose that we get the id 'farmer5' in answer of the farmer creation.*
 
 ### Update a farmer (replace José data with Stéphane data)
 
 ```bash
 curl -XPUT localhost:6000/farmers/farmer5 -d'{
-    "first_name": "Stéphane",
-    "last_name": "Le Foll",
-    "birth_date": "1960-02-03",
-    "specialties": [
-        "Cow",
-        "Sheep",
-        "Pig"
-    ],
-    "picture": "picture30.png",
-    "status": "present"
-}'
+        "first_name": "Stéphane",
+        "last_name": "Le Foll",
+        "birth_date": "1960-02-03",
+        "specialties": [
+            "Cow",
+            "Sheep",
+            "Pig"
+        ],
+        "picture": "picture31",
+        "status": "present"
+    }'
+    -H "Content-Type: application/json"
 ```
 
 ### Update specific fields of a farmer (update status for Stéphane)
 
 ```bash
 curl -XPATCH localhost:6000/farmers/farmer5 -d'{
-"status": "gone"
-}'
+        "status": "gone"
+    }'
+    -H "Content-Type: application/json"
 ```
 
 ### Delete a farmer (delete Stéphane data)

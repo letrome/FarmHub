@@ -6,37 +6,68 @@ cd "$(dirname "$0")/.." || exit
 ## Launch species
 cd species || exit
 node server.js 3300&
-sleep 5
+
+echo "waiting for species service being launched ..."
+while ! nc -z localhost 3300; do
+  sleep 1
+done
+
 echo "species service launched"
+sleep 2
 cd .. || exit
 
 ## Launch animals
 cd animals || exit
 php -S 127.0.0.1:4400 -t public&
-sleep 5
+echo "waiting for animals service being launched ..."
+while ! nc -z 127.0.0.1 4400; do
+  sleep 1
+done
+
 echo "animals service launched"
+sleep 2
 cd .. || exit
 
 ## Launch pictures
 cd pictures || exit
 go run . 127.0.0.1:5500&
-sleep 5
+
+echo "waiting for pictures service being launched ..."
+while ! nc -z localhost 5500; do
+  sleep 1
+done
+
 echo "pictures service launched"
+sleep 2
 cd .. || exit
 
 ## Launch farmers
 cd farmers || exit
 python main.py --port=6600&
-sleep 5
+
+echo "waiting for farmers service being launched ..."
+while ! nc -z localhost 6600; do
+  sleep 1
+done
+
 echo "farmers service launched"
+sleep 2
+
 cd .. || exit
 
 ## Launch farm
 cd farm || exit
 export SPRING_PROFILES_ACTIVE=intg
 mvn spring-boot:run&
-sleep 10
+
+echo "waiting for farm service being launched ..."
+while ! nc -z localhost 7700; do
+  sleep 1
+done
+
 echo "farm service launched"
+sleep 5
+
 cd .. || exit
 
 sleep 5

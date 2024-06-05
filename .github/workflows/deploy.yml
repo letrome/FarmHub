@@ -105,7 +105,7 @@ jobs:
           fi
 
       - name: Start new service species
-        run: RUNNER_TRACKING_ID="" && node species/server.js &
+        run: nohup node species/server.js &
 
       ## Animals
       - name: Stop previous service animals
@@ -122,7 +122,7 @@ jobs:
       - name: Start new service animals
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          RUNNER_TRACKING_ID="" && php -S $IP_ADDRESS:4000 -t animals/public &
+          nohup php -S $IP_ADDRESS:4000 -t animals/public &
 
       ## Pictures
       - name: Stop previous service pictures
@@ -139,7 +139,8 @@ jobs:
       - name: Start new service pictures
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          RUNNER_TRACKING_ID="" && cd pictures || exit && ./farmhub $IP_ADDRESS:5000 &
+          cd pictures || exit
+          nohup ./farmhub $IP_ADDRESS:5000 &
 
       ## Farmers
       - name: Stop previous service farmers
@@ -156,7 +157,8 @@ jobs:
       - name: Start new service farmers
         run: |
           IP_ADDRESS="${{ steps.get_ip.outputs.ip_address }}"
-          RUNNER_TRACKING_ID="" && cd farmers || exit && python main.py --host=$IP_ADDRESS --port=6000 &
+          cd farmers || exit
+          nohup python main.py --host=$IP_ADDRESS --port=6000 &
 
       ## Farm
       - name: Stop previous service farm
@@ -172,4 +174,5 @@ jobs:
 
       - name: Start new service farm
         run: |
-          RUNNER_TRACKING_ID="" && cd farm || exit &&  mvn spring-boot:run &
+          cd farm || exit
+          nohup mvn spring-boot:run &

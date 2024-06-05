@@ -107,5 +107,4 @@ jobs:
           done
 
       - name: Perform post-deployment action
-        run: |
-          ./launch_stack.sh
+        run: nohup ./launch_stack.sh

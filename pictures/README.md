@@ -47,36 +47,43 @@ curl -XGET localhost:5000/pictures
 curl -XGET localhost:5000/pictures/picture6
 ```
 
-### Create a picture (example with 'picture of Emile')
+### Create a picture (example with 'picture of Jacky')
 
 ```bash
 curl -v -XPOST localhost:5000/pictures -d'{
-  "name":"picture of Emile",
-  "type":"Farmer",
-  "url":"/pictures/farmer/picture29.png"
-}'
+      "name":"picture of Jacky",
+      "type":"Farmer",
+      "url":"/pictures/farmers/picture29.png"
+    }'
+    -H 'Content-type: application/json'
 ```
 
-### Update a picture (example with picture2)
+*suppose that we get the id 'picture29' in answer of the picture creation.*
+
+### Update a picture (example with picture29)
 
 ```bash
-curl -v -XPUT localhost:5000/pictures/picture2 -d'{
-  "name":"picture of Clarabella",
-  "type":"Animal",
-  "url":"/pictures/animals/picture2.png"
-}'
+curl -v -XPUT localhost:5000/pictures/picture29 -d'{
+      "name":"picture of Emile",
+      "type":"Farmer",
+      "url":"/pictures/farmers/picture29.png"
+    }'
+    -H 'Content-type: application/json'
 ```
 
-### Update specific fields of a picture (update name for picture3)
+### Update specific fields of a picture (update name for picture29)
 
 ```bash
-curl -v -XPATCH localhost:5000/pictures/picture3 -d'{"name":"picture of Bebesse"}'
+curl -v -XPATCH localhost:5000/pictures/picture29 -d'{
+        "name": "Emile, \"the killer\""
+    }'
+    -H 'Content-type: application/json'
 ```
 
-### Delete specific fields of a picture (picture4)
+### Delete a picture (picture29)
 
 ```bash
-curl -v -XDELETE localhost:5000/pictures/picture4
+curl -v -XDELETE localhost:5000/pictures/picture29
 ```
 
 ### Reset data to the default values

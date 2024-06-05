@@ -50,59 +50,64 @@ is a postman collection with example of use of the api.
 ### List all animals
 
 ```bash
-curl -X GET http://localhost:4000/animals
+curl -XGET http://localhost:4000/animals
 ```
 
 ### Get an animal by id (example with Marguerite)
 
 ```bash
-curl -X GET http://localhost:4000/animals/animal1
+curl -XGET http://localhost:4000/animals/animal1
 ```
 
 ### Create an animal (example with Poulain)
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-    "name": "Poulain",
-    "birth_date": "1848-02-01",
-    "specie": "specie4",
-    "farmer": "farmer1",
-    "status": "gone",
-    "picture": "picture25"
-}' http://localhost:4000/animals
+curl -XPOST http://localhost:4000/animals -d '{
+        "name": "Poulain",
+        "birth_date": "1848-02-01",
+        "specie": "specie4",
+        "farmer": "farmer1",
+        "status": "gone",
+        "picture": "picture32"
+    }'
+    -H "Content-Type: application/json"
 ```
 
-### Update an animal (replace Poulain data with Pulain data)
+*suppose that we get the id 'animal25' in answer of the animal creation.*
+
+### Update an animal (replace Poulain data with Rapidash data)
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{
-    "name": "Pulain",
-    "birth_date": "1848-02-01",
-    "specie": "specie4",
-    "farmer": "farmer1",
-    "status": "gone",
-    "picture": "picture25"
-}' http://localhost:4000/animals/animal25
+curl -XPUT http://localhost:4000/animals/animal25 -d '{
+        "name": "Rapidash",
+        "birth_date": "1996-02-27",
+        "specie": "specie4",
+        "farmer":"farmer2",
+        "status":"present",
+        "picture":"picture33"
+    }'
+    -H "Content-Type: application/json"
 ```
 
-### Update specific fields of an animal (update picture for Pulain)
+### Update specific fields of an animal (update status for Rapidash)
 
 ```bash
-curl -X PATCH -H "Content-Type: application/json" -d '{
-    "picture": "picture25-3"
-}' http://localhost:4000/animals/animal25
+curl -XPATCH http://localhost:4000/animals/animal25 -d '{
+        "status": "gone"
+    }' 
+    -H "Content-Type: application/json"
 ```
 
-### Delete an animal (delete Pulain data)
+### Delete an animal (delete Rapidash data)
 
 ```bash
-curl -X DELETE http://localhost:4000/animals/animal25
+curl -XDELETE http://localhost:4000/animals/animal25
 ```
 
 ### Reset data to the default values
 
 ```bash
-curl -X POST http://localhost:4000/reset
+curl -XPOST http://localhost:4000/reset
 ```
 
 ## Integration tests

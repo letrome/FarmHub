@@ -6,3 +6,4 @@
 **/composer
 farmers/.venv
 farmers/__pycache__
+farm/target/

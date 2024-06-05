@@ -1,0 +1,1866 @@
+{
+	"info": {
+		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
+		"name": "Integration testing",
+		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatively, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556688",
+		"_collection_link": "https://www.postman.com/letrome/workspace/farmhub/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
+	},
+	"item": [
+		{
+			"name": "Pictures",
+			"item": [
+				{
+					"name": "List all",
+					"item": [
+						{
+							"name": "List all pictures",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 28\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(28);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "List all pictures"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** list all pictures\n\n**Return** all pictures"
+				},
+				{
+					"name": "Get existing picture",
+					"item": [
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"picture1\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Marguerite\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Animal\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/animals/picture1.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/picture1",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"picture1"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get an existing picture by its id\n\n**Return** the requested picture"
+				},
+				{
+					"name": "Get non-existing picture",
+					"item": [
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Picture not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/picture0",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"picture0"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get a non-existing picture by its id\n\n**Return** an error 404"
+				},
+				{
+					"name": "Create and get a picture",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"picture_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** Get this picture\n\n**Return** this picture"
+				},
+				{
+					"name": "Create and list all pictures",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "List all pictures",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"const id = pm.collectionVariables.get(\"picture_id\");",
+											"const newPicture = responseJson.find(picture => picture.id === id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 29\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(29);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    pm.expect(newPicture.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(newPicture.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(newPicture.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(newPicture.url).to.eql(url);",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "List all pictures"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** List all pictures\n\n**Return** default pictures plus this picture"
+				},
+				{
+					"name": "Create and delete a picture",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"picture_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Delete a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Picture not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** Delete this picture\n\n**Then execute** Get this picture\n\n**Return** an error 404"
+				},
+				{
+					"name": "Two consecutive deletes",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"\tconst id = pm.collectionVariables.get(\"picture_id\");",
+											"  pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Delete a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Picture not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/picture29",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"picture29"
+									]
+								},
+								"description": "Delete a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** Delete this picture\n\n**Then execute** Delete this picture\n\n**Return** an error 404"
+				},
+				{
+					"name": "Create and update a picture",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Jacky\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Update a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Emile\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Emile\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Update a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"picture29\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Emile\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** Update this picture\n\n**Then execute** Get this picture\n\n**Return** the picture updated"
+				},
+				{
+					"name": "Create and patch a picture",
+					"item": [
+						{
+							"name": "Create a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"picture_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"picture of Emile\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Emile\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures"
+									]
+								},
+								"description": "Create a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Patch a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id exists\", function () {",
+											"    pm.expect(responseJson).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Emile, \\\"the killer\\\"\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Emile, \\\"the killer\\\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Update specific fields of a picture"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a picture by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"picture29\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that name is correct\", function () {",
+											"    const name = \"Emile, \\\"the killer\\\"\";",
+											"    pm.expect(responseJson.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Verify that type is correct\", function () {",
+											"    const type = \"Farmer\";",
+											"    pm.expect(responseJson.type).to.eql(type);",
+											"});",
+											"",
+											"pm.test(\"Verify that url is correct\", function () {",
+											"    const url = \"/pictures/farmers/picture29.png\";",
+											"    pm.expect(responseJson.url).to.eql(url);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/pictures/{{picture_id}}",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"{{picture_id}}"
+									]
+								},
+								"description": "Get a picture by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pictures_url}}/reset",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset pictures to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a picture\n\n**Then execute** Patch this picture\n\n**Then execute** Get this picture\n\n**Return** the picture patched"
+				},
+				{
+					"name": "Update a non-existing picture",
+					"item": [
+						{
+							"name": "Update a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Picture not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\":\"picture of Jacky\",\n  \"type\":\"Farmer\",\n  \"url\":\"/pictures/farmers/picture29.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/picture0",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"picture0"
+									]
+								},
+								"description": "Update a picture"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Update a picture\n\n**Return** an error 404"
+				},
+				{
+					"name": "Patch a non-existing picture",
+					"item": [
+						{
+							"name": "Patch a picture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Picture not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Emile, \\\"the killer\\\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pictures_url}}/pictures/picture0",
+									"host": [
+										"{{pictures_url}}"
+									],
+									"path": [
+										"pictures",
+										"picture0"
+									]
+								},
+								"description": "Update specific fields of a picture"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Patch a picture\n\n**Return** an error 404"
+				}
+			],
+			"description": "Integration tests of the service \"Pictures\"."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

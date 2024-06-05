@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
+		"name": "Integration testing",
+		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatively, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556688",
+		"_collection_link": "https://www.postman.com/letrome/workspace/farmhub/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
+	},
+	"item": [
+		{
+			"name": "Farm",
+			"item": [
+				{
+					"name": "Farm",
+					"item": [
+						{
+							"name": "Get Farm, include gone",
+							"item": [
+								{
+									"name": "Get farm",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Init variables",
+													"const responseJson = pm.response.json();",
+													"const nb_animals = 24;",
+													"const nb_farmers = 4;",
+													"",
+													"// Tests",
+													" pm.test(\"Check that status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Verify that farm_name is correct\", function () {",
+													"    const farm_name = \"Farmville\";",
+													"    pm.expect(responseJson.farm_name).to.eql(farm_name);",
+													"});",
+													"",
+													"pm.test(\"Verify that beginning_date is correct\", function () {",
+													"    const beginning_date = \"2009-06-19\";",
+													"    pm.expect(responseJson.beginning_date).to.eql(beginning_date);",
+													"});",
+													"",
+													"pm.test(\"Verify that nb_animals is correct\", function () {",
+													"    pm.expect(responseJson.nb_animals).to.eql(nb_animals);",
+													"});",
+													"",
+													"",
+													"pm.test(\"Verify that nb_farmers is correct\", function () {",
+													"    pm.expect(responseJson.nb_farmers).to.eql(nb_farmers);",
+													"});",
+													"",
+													"pm.test(\"Number of entries in farmers is 4\", () => {",
+													"  pm.expect(responseJson.farmers).to.have.lengthOf(nb_farmers);",
+													"});",
+													"",
+													"responseJson.farmers.forEach((entry, index) => {",
+													"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+													"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.specialties).to.have.lengthOf(3);",
+													"    entry.specialties.forEach(specialty => {",
+													"        pm.expect(specialty).to.be.a(\"string\").and.to.not.be.empty;",
+													"    })",
+													"    pm.expect(entry.picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"  });",
+													"});",
+													"",
+													"responseJson.animals.forEach((animal, index) => {",
+													"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+													"    pm.expect(animal).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(animal).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(animal).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    let specie = animal.specie;",
+													"    pm.expect(specie).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"description\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"diet\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"natural_habitat\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"conservation_status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    let farmer = animal.farmer",
+													"    pm.expect(farmer).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer.specialties).to.have.lengthOf(3);",
+													"    farmer.specialties.forEach(specialty => {",
+													"        pm.expect(specialty).to.be.a(\"string\").and.to.not.be.empty;",
+													"    })",
+													"",
+													"    let picture = farmer.picture;",
+													"    pm.expect(picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    pm.expect(animal).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    picture = animal.picture;",
+													"    pm.expect(picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"",
+													"})",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{farm_url}}/farm?include_gone=true",
+											"host": [
+												"{{farm_url}}"
+											],
+											"path": [
+												"farm"
+											],
+											"query": [
+												{
+													"key": "include_gone",
+													"value": "true"
+												}
+											]
+										},
+										"description": "Get farm"
+									},
+									"response": []
+								}
+							],
+							"description": "**Execute** list all farmers, with param include_gone=true\n\n**Return** all farmers"
+						},
+						{
+							"name": "Get farm, not include gone",
+							"item": [
+								{
+									"name": "Get farm",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Init variables",
+													"const responseJson = pm.response.json();",
+													"const nb_animals = 20;",
+													"const nb_farmers = 2;",
+													"",
+													"// Tests",
+													" pm.test(\"Check that status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Verify that farm_name is correct\", function () {",
+													"    const farm_name = \"Farmville\";",
+													"    pm.expect(responseJson.farm_name).to.eql(farm_name);",
+													"});",
+													"",
+													"pm.test(\"Verify that beginning_date is correct\", function () {",
+													"    const beginning_date = \"2009-06-19\";",
+													"    pm.expect(responseJson.beginning_date).to.eql(beginning_date);",
+													"});",
+													"",
+													"pm.test(\"Verify that nb_animals is correct\", function () {",
+													"    pm.expect(responseJson.nb_animals).to.eql(nb_animals);",
+													"});",
+													"",
+													"",
+													"pm.test(\"Verify that nb_farmers is correct\", function () {",
+													"    pm.expect(responseJson.nb_farmers).to.eql(nb_farmers);",
+													"});",
+													"",
+													"pm.test(\"Number of entries in farmers is 4\", () => {",
+													"  pm.expect(responseJson.farmers).to.have.lengthOf(nb_farmers);",
+													"});",
+													"",
+													"responseJson.farmers.forEach((entry, index) => {",
+													"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+													"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.specialties).to.have.lengthOf(3);",
+													"    entry.specialties.forEach(specialty => {",
+													"        pm.expect(specialty).to.be.a(\"string\").and.to.not.be.empty;",
+													"    })",
+													"    pm.expect(entry.picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry.picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"  });",
+													"});",
+													"",
+													"responseJson.animals.forEach((animal, index) => {",
+													"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+													"    pm.expect(animal).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(animal).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(animal).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    let specie = animal.specie;",
+													"    pm.expect(specie).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"description\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"diet\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"natural_habitat\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(specie).to.have.property(\"conservation_status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    let farmer = animal.farmer",
+													"    pm.expect(farmer).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer.specialties).to.have.lengthOf(3);",
+													"    farmer.specialties.forEach(specialty => {",
+													"        pm.expect(specialty).to.be.a(\"string\").and.to.not.be.empty;",
+													"    })",
+													"",
+													"    let picture = farmer.picture;",
+													"    pm.expect(picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(farmer).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    pm.expect(animal).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"    picture = animal.picture;",
+													"    pm.expect(picture).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"type\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"    pm.expect(picture).to.have.property(\"url\").and.to.be.a(\"string\").and.to.not.be.empty;",
+													"",
+													"",
+													"})",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{farm_url}}/farm?include_gone=false",
+											"host": [
+												"{{farm_url}}"
+											],
+											"path": [
+												"farm"
+											],
+											"query": [
+												{
+													"key": "include_gone",
+													"value": "false"
+												}
+											]
+										},
+										"description": "Get farm"
+									},
+									"response": []
+								}
+							],
+							"description": "**Execute** list all farmers, with param include_gone=false\n\n**Return** all but gone farmers"
+						},
+						{
+							"name": "Update Farm",
+							"item": []
+						},
+						{
+							"name": "Patch Farm",
+							"item": []
+						}
+					],
+					"description": "Integration tests for the api \"farm\""
+				},
+				{
+					"name": "Specie",
+					"item": [
+						{
+							"name": "List all species",
+							"item": []
+						},
+						{
+							"name": "Get a specie by id",
+							"item": []
+						},
+						{
+							"name": "Create a specie",
+							"item": []
+						},
+						{
+							"name": "Update a specie",
+							"item": []
+						},
+						{
+							"name": "Patch a specie",
+							"item": []
+						},
+						{
+							"name": "Delete a specie",
+							"item": []
+						},
+						{
+							"name": "Delete a specie used by an animal",
+							"item": []
+						}
+					],
+					"description": "Integration tests for the api \"specie\""
+				},
+				{
+					"name": "Picture",
+					"item": [
+						{
+							"name": "List all pictures",
+							"item": []
+						},
+						{
+							"name": "Get a picture by id",
+							"item": []
+						},
+						{
+							"name": "Create a picture",
+							"item": []
+						},
+						{
+							"name": "Update a picture",
+							"item": []
+						},
+						{
+							"name": "Patch a picture",
+							"item": []
+						},
+						{
+							"name": "Delete a picture",
+							"item": []
+						},
+						{
+							"name": "Delete a picture used by an animal",
+							"item": []
+						},
+						{
+							"name": "Delete a picture used by a farmer",
+							"item": []
+						}
+					],
+					"description": "Integration tests for the api \"picture\""
+				},
+				{
+					"name": "Animal",
+					"item": [
+						{
+							"name": "List all animals",
+							"item": []
+						},
+						{
+							"name": "Get an animal by id",
+							"item": []
+						},
+						{
+							"name": "Create an animal",
+							"item": []
+						},
+						{
+							"name": "Create an animal with non existing specie",
+							"item": []
+						},
+						{
+							"name": "Create an animal with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Create an animal with non existing farmer",
+							"item": []
+						},
+						{
+							"name": "Update an animal",
+							"item": []
+						},
+						{
+							"name": "Update an animal with non existing specie",
+							"item": []
+						},
+						{
+							"name": "Update an animal with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Update an animal with non existing farmer",
+							"item": []
+						},
+						{
+							"name": "Patch an animal",
+							"item": []
+						},
+						{
+							"name": "Patch an animal with non existing specie",
+							"item": []
+						},
+						{
+							"name": "Patch an animal with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Patch an animal with non existing farmer",
+							"item": []
+						},
+						{
+							"name": "Delete an animal",
+							"item": []
+						}
+					],
+					"description": "Integration tests for the api \"animal\""
+				},
+				{
+					"name": "Farmers",
+					"item": [
+						{
+							"name": "List all farmers",
+							"item": []
+						},
+						{
+							"name": "Get a farmer by id",
+							"item": []
+						},
+						{
+							"name": "Create a farmer",
+							"item": []
+						},
+						{
+							"name": "Create a farmer with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Update a farmer",
+							"item": []
+						},
+						{
+							"name": "Update a farmer with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Patch a farmer",
+							"item": []
+						},
+						{
+							"name": "Patch a farmer with non existing picture",
+							"item": []
+						},
+						{
+							"name": "Delete a farmer",
+							"item": []
+						},
+						{
+							"name": "Delete a farmer used by an animal",
+							"item": []
+						}
+					],
+					"description": "Integration tests for the api \"farmer\""
+				}
+			],
+			"description": "Integration tests for the service \"Farm\""
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

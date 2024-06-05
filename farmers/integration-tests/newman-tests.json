@@ -1,0 +1,2135 @@
+{
+	"info": {
+		"_postman_id": "9a122e4d-628e-4659-8769-82b17c96c9cc",
+		"name": "Integration testing",
+		"description": "Integration tests of the project FarmHub. It contains integration tests for the services:\n\n- Species\n- Animals\n    \n\nYou can run them directly from this project:\n\n- \"Run collection\" to launch all the integration tests\n- \"Run folder\" to launch integration tests of a specific service\n    \n\nAlternatively, you can execute them from the FarmHub code repository. From the root of the project, given a specific service `$SERVICE`:\n\n``` bash\n$SERVICE/integration-tests/run.sh\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556688",
+		"_collection_link": "https://www.postman.com/letrome/workspace/farmhub/collection/7556688-9a122e4d-628e-4659-8769-82b17c96c9cc?action=share&source=collection_link&creator=7556688"
+	},
+	"item": [
+		{
+			"name": "Farmers",
+			"item": [
+				{
+					"name": "List all",
+					"item": [
+						{
+							"name": "List all farmers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 4\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(4);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"specialties\").and.to.be.an(\"array\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "List all farmers"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** list all farmers\n\n**Return** all farmers"
+				},
+				{
+					"name": "Get existing farmer",
+					"item": [
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer1\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Alice\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Cooper\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1948-02-04\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture25\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer1",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer1"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get an existing farmer by its id\n\n**Return** the requested farmer"
+				},
+				{
+					"name": "Get non-existing farmer",
+					"item": [
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Farmer not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer0",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer0"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** get a non-existing farmer by its id\n\n**Return** an error 404"
+				},
+				{
+					"name": "Create and get a farmer",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Bové\",\n\t\"birth_date\": \"1953-06-11\",\n\t\"specialties\": [\n\t\t\"Cow\",\n\t\t\"Sheep\",\n\t\t\"Pig\"\n\t],\n\t\"picture\": \"picture30\",\n\t\"status\": \"present\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"picture_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset farmers to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** Get this farmer\n\n**Return** this farmer"
+				},
+				{
+					"name": "Create and list all farmers",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Bové\",\n\t\"birth_date\": \"1953-06-11\",\n\t\"specialties\": [\n\t\t\"Cow\",\n\t\t\"Sheep\",\n\t\t\"Pig\"\n\t],\n\t\"picture\": \"picture30\",\n\t\"status\": \"present\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "List all farmers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"const id = pm.collectionVariables.get(\"farmer_id\");",
+											"const newFarmer = responseJson.find(farmer => farmer.id === id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Number of entries is 5\", () => {",
+											"  pm.expect(responseJson).to.have.lengthOf(5);",
+											"});",
+											"",
+											"responseJson.forEach((entry, index) => {",
+											"  pm.test(`Entry ${index + 1} has all required fields and non-empty values`, () => {",
+											"    pm.expect(entry).to.have.property(\"id\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"first_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"last_name\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"birth_date\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"specialties\").and.to.be.an(\"array\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"picture\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"    pm.expect(entry).to.have.property(\"status\").and.to.be.a(\"string\").and.to.not.be.empty;",
+											"  });",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(newFarmer.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(newFarmer.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(newFarmer.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(newFarmer.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(newFarmer.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(newFarmer.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(newFarmer.status).to.eql(status);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "List all farmers"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"farmer_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset farmers to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** List all farmers\n\n**Return** default farmers plus this farmer"
+				},
+				{
+					"name": "Create and delete a farmer",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Bové\",\n\t\"birth_date\": \"1953-06-11\",\n\t\"specialties\": [\n\t\t\"Cow\",\n\t\t\"Sheep\",\n\t\t\"Pig\"\n\t],\n\t\"picture\": \"picture30\",\n\t\"status\": \"present\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Delete a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Farmer not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer5",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer5"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"farmer_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset animals to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** Delete this farmer\n\n**Then execute** Get this farmer\n\n**Return** an error 404"
+				},
+				{
+					"name": "Two consecutive deletes",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Bové\",\n\t\"birth_date\": \"1953-06-11\",\n\t\"specialties\": [\n\t\t\"Cow\",\n\t\t\"Sheep\",\n\t\t\"Pig\"\n\t],\n\t\"picture\": \"picture30\",\n\t\"status\": \"present\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Delete a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Farmer not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Delete a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"farmer_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset farmers to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** Delete this farmer\n\n**Then execute** Delete this farmer\n\n**Return** an error 404"
+				},
+				{
+					"name": "Create and update a farmer",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"José\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Bové\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1953-06-11\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture30\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Bové\",\n\t\"birth_date\": \"1953-06-11\",\n\t\"specialties\": [\n\t\t\"Cow\",\n\t\t\"Sheep\",\n\t\t\"Pig\"\n\t],\n\t\"picture\": \"picture30\",\n\t\"status\": \"present\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Update a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Stéphane\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Le Foll\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1960-02-03\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture31\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"first_name\": \"Stéphane\",\n        \"last_name\": \"Le Foll\",\n        \"birth_date\": \"1960-02-03\",\n        \"specialties\": [\n            \"Cow\",\n            \"Sheep\",\n            \"Pig\"\n        ],\n        \"picture\": \"picture31\",\n        \"status\": \"present\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Update a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Stéphane\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Le Foll\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1960-02-03\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture31\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"farmer_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset farmers to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** Update this farmer\n\n**Then execute** Get this farmer\n\n**Return** the farmer updated"
+				},
+				{
+					"name": "Create and patch a farmer",
+					"item": [
+						{
+							"name": "Create a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Stéphane\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Le Foll\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1960-02-03\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture31\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"present\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"first_name\": \"Stéphane\",\n        \"last_name\": \"Le Foll\",\n        \"birth_date\": \"1960-02-03\",\n        \"specialties\": [\n            \"Cow\",\n            \"Sheep\",\n            \"Pig\"\n        ],\n        \"picture\": \"picture31\",\n        \"status\": \"present\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers"
+									]
+								},
+								"description": "Create a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Update specific fields of a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set(\"farmer_id\", responseJson.id);",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Stéphane\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Le Foll\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1960-02-03\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture31\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"status\": \"gone\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer5",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer5"
+									]
+								},
+								"description": "Update specific fields of a farmer"
+							},
+							"response": []
+						},
+						{
+							"name": "Get a farmer by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify that id is correct\", function () {",
+											"    const id = \"farmer5\";",
+											"    pm.expect(responseJson.id).to.eql(id);",
+											"});",
+											"",
+											"pm.test(\"Verify that first_name is correct\", function () {",
+											"    const first_name = \"Stéphane\";",
+											"    pm.expect(responseJson.first_name).to.eql(first_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that last_name is correct\", function () {",
+											"    const last_name = \"Le Foll\";",
+											"    pm.expect(responseJson.last_name).to.eql(last_name);",
+											"});",
+											"",
+											"pm.test(\"Verify that birth_date is correct\", function () {",
+											"    const birth_date = \"1960-02-03\";",
+											"    pm.expect(responseJson.birth_date).to.eql(birth_date);",
+											"});",
+											"",
+											"pm.test(\"Verify that specialties is correct\", function () {",
+											"    const specialties = [",
+											"            \"Cow\",",
+											"            \"Sheep\",",
+											"            \"Pig\"",
+											"        ];",
+											"    pm.expect(responseJson.specialties).to.eql(specialties);",
+											"});",
+											"",
+											"pm.test(\"Verify that picture is correct\", function () {",
+											"    const picture = \"picture31\";",
+											"    pm.expect(responseJson.picture).to.eql(picture);",
+											"});",
+											"",
+											"pm.test(\"Verify that status is correct\", function () {",
+											"    const status = \"gone\";",
+											"    pm.expect(responseJson.status).to.eql(status);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/farmers/{{farmer_id}}",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"{{farmer_id}}"
+									]
+								},
+								"description": "Get a farmer by id"
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Verify teardown success",
+											" pm.test(\"Check that status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify reset body is correct\", function () {",
+											"  pm.expect(responseJson.applied).is.true;",
+											"});",
+											"",
+											"// Reset variables",
+											"pm.collectionVariables.unset(\"farmer_id\")",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{farmers_url}}/reset",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"reset"
+									]
+								},
+								"description": "Reset farmers to the default values"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Create a farmer\n\n**Then execute** Patch this farmer\n\n**Then execute** Get this farmer\n\n**Return** the farmer patched"
+				},
+				{
+					"name": "Update a non-existing farmer",
+					"item": [
+						{
+							"name": "Update a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"first_name\": \"Stéphane\",\n        \"last_name\": \"Le Foll\",\n        \"birth_date\": \"1960-02-03\",\n        \"specialties\": [\n            \"Cow\",\n            \"Sheep\",\n            \"Pig\"\n        ],\n        \"picture\": \"picture31\",\n        \"status\": \"present\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer0",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer0"
+									]
+								},
+								"description": "Update a farmer"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Update a farmer\n\n**Return** an error 404"
+				},
+				{
+					"name": "Patch a non-existing farmer",
+					"item": [
+						{
+							"name": "Update specific fields of a farmer",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"status\": \"gone\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{farmers_url}}/farmers/farmer0",
+									"host": [
+										"{{farmers_url}}"
+									],
+									"path": [
+										"farmers",
+										"farmer0"
+									]
+								},
+								"description": "Update specific fields of a farmer"
+							},
+							"response": []
+						}
+					],
+					"description": "**Execute** Patch a farmer\n\n**Return** an error 404"
+				}
+			],
+			"description": "Integration tests of the service \"Farmers\"."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

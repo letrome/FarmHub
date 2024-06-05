@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   push:
-    branches: [ "farm" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "farm" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:

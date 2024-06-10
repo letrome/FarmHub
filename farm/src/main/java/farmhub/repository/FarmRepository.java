@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Repository
 public class FarmRepository {
-    private static final String FILE_PATH = "resources/db.txt";
+    private static final String FILE_PATH = "src/main/resources/db.txt";
 
     private FarmRepositoryModel farmRepositoryModel;
 

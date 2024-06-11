@@ -2018,7 +2018,18 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Farmer not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -2069,6 +2080,29 @@
 					"item": [
 						{
 							"name": "Update specific fields of a farmer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Init variables",
+											"const responseJson = pm.response.json();",
+											"",
+											"// Tests",
+											" pm.test(\"Check that status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Verify the content of the response\", function () {",
+											"\t\tconst errorMessage = \"Farmer not found\";",
+											"\t\tpm.expect(responseJson.error).to.eql(errorMessage);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "PATCH",
 								"header": [],
